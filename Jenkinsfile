@@ -2,9 +2,9 @@ pipeline {
     agent any
 
     environment {
-        DOCKERHUB_USERNAME   = "your-dockerhub-username"
+        DOCKERHUB_USERNAME   = "adityadocker10"
         IMAGE_NAME            = "fullstack-todo-app"
-        DOCKER_CREDENTIALS_ID = "dockerhub-credentials"
+        DOCKER_CREDENTIALS_ID = "dockerhub-creds"
         IMAGE_TAG              = "${env.BUILD_NUMBER}"
         FULL_IMAGE              = "${DOCKERHUB_USERNAME}/${IMAGE_NAME}"
     }
