@@ -21,7 +21,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 echo "Building Docker image: ${FULL_IMAGE}:${IMAGE_TAG}"
-                sh "docker build -t ${FULL_IMAGE}:${IMAGE_TAG} -t ${FULL_IMAGE}:latest ."
+                bat "docker build -t %FULL_IMAGE%:%IMAGE_TAG% -t %FULL_IMAGE%:latest ."
             }
         }
 
@@ -33,7 +33,7 @@ pipeline {
                     usernameVariable: 'DOCKER_USER',
                     passwordVariable: 'DOCKER_PASS'
                 )]) {
-                    sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
+                    bat 'echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin'
                 }
             }
         }
@@ -41,8 +41,8 @@ pipeline {
         stage('Push Image to Docker Hub') {
             steps {
                 echo "Pushing image to Docker Hub: ${FULL_IMAGE}"
-                sh "docker push ${FULL_IMAGE}:${IMAGE_TAG}"
-                sh "docker push ${FULL_IMAGE}:latest"
+                bat "docker push %FULL_IMAGE%:%IMAGE_TAG%"
+                bat "docker push %FULL_IMAGE%:latest"
             }
         }
     }
@@ -55,7 +55,7 @@ pipeline {
             echo "❌ Pipeline failed. Check the logs above for details."
         }
         always {
-            sh 'docker logout || true'
+            bat(script: 'docker logout', returnStatus: true)
         }
     }
 }
